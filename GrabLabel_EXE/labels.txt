@@ -1,0 +1,4 @@
+0 void 0 0 0
+1 sky 0 0 255
+2 trees 0 255 0
+3 pedestrains 255 0 0

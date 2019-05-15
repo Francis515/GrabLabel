@@ -28,6 +28,9 @@
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="GrabLabel_EXE">
+      <UniqueIdentifier>{3c5a1ebf-6603-4208-8b98-7474797c580b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -80,5 +83,30 @@
     <ClInclude Include="MultiLabel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GrabLabel_EXE\GrabLabel.exe">
+      <Filter>GrabLabel_EXE</Filter>
+    </None>
+    <None Include="GrabLabel_EXE\opencv_world345.dll">
+      <Filter>GrabLabel_EXE</Filter>
+    </None>
+    <None Include="GrabLabel_EXE\Qt5Core.dll">
+      <Filter>GrabLabel_EXE</Filter>
+    </None>
+    <None Include="GrabLabel_EXE\Qt5Designer.dll">
+      <Filter>GrabLabel_EXE</Filter>
+    </None>
+    <None Include="GrabLabel_EXE\Qt5Gui.dll">
+      <Filter>GrabLabel_EXE</Filter>
+    </None>
+    <None Include="GrabLabel_EXE\Qt5Widgets.dll">
+      <Filter>GrabLabel_EXE</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="GrabLabel_EXE\labels.txt">
+      <Filter>GrabLabel_EXE</Filter>
+    </Text>
   </ItemGroup>
 </Project>

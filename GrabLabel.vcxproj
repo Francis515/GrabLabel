@@ -145,6 +145,17 @@
     <ClInclude Include="MultiLabel.h" />
     <ClInclude Include="ROI.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="GrabLabel_EXE\GrabLabel.exe" />
+    <None Include="GrabLabel_EXE\opencv_world345.dll" />
+    <None Include="GrabLabel_EXE\Qt5Core.dll" />
+    <None Include="GrabLabel_EXE\Qt5Designer.dll" />
+    <None Include="GrabLabel_EXE\Qt5Gui.dll" />
+    <None Include="GrabLabel_EXE\Qt5Widgets.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="GrabLabel_EXE\labels.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />
