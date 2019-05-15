@@ -11,6 +11,9 @@ Visual Studio 2017 with Qt Extension
 # Dependency Libs/Tools
 Qt 5.9.1, OpenCV 3.4.5
 
+# GUI
+![](https://github.com/Francis515/GrabLabel/raw/master/GrabLabel_EXE/GrabLabel_GUI.png)
+
 # Instructions
 * Preparing: First thing before you start to use it, make a txt file of your label information. The format is "value name R G B" for each line, for example "3 sky 0 0 255". The value is the exact value in the final result gray image. The name doesn't affect anything, just for convenience. R G B is the color that will appear in the final result color image.
 
