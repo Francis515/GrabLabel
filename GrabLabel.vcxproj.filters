@@ -109,4 +109,18 @@
       <Filter>GrabLabel_EXE</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="GrabLabel_EXE\exp1.jpg">
+      <Filter>GrabLabel_EXE</Filter>
+    </Image>
+    <Image Include="GrabLabel_EXE\exp2.png">
+      <Filter>GrabLabel_EXE</Filter>
+    </Image>
+    <Image Include="GrabLabel_EXE\label1.png">
+      <Filter>GrabLabel_EXE</Filter>
+    </Image>
+    <Image Include="GrabLabel_EXE\label2.png">
+      <Filter>GrabLabel_EXE</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

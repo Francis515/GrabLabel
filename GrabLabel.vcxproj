@@ -156,6 +156,12 @@
   <ItemGroup>
     <Text Include="GrabLabel_EXE\labels.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="GrabLabel_EXE\exp1.jpg" />
+    <Image Include="GrabLabel_EXE\exp2.png" />
+    <Image Include="GrabLabel_EXE\label1.png" />
+    <Image Include="GrabLabel_EXE\label2.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />
