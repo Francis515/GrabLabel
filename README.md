@@ -29,7 +29,8 @@ session, you should focus on one object or a sequences of adjacent objects.
 # Some Caveats
 * Before grabcut, make sure a label has been set and a ROI has been draw.
 * Brush size will be adjusted only after you click Brush Size button.
-* Use Clean Box to clean the mark you have draw.
+* Use left mouse button to mark foreground which has red color and right button to mark background which has blue color.
+* Use Clean Box to clean the mark you have draw, both left and right mouse button are available.
 * Lightning mode is recommended to be used to accelarate grabcut when the size of the image is quite large. In this mode, the ROI will be treated as the whole cut region so that the time consumption of grabcut is reduced greatly but the result, as trade-off,  may not be as satisfying as in normal mode.
 
 # Examples
