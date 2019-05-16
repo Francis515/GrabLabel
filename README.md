@@ -3,7 +3,7 @@ GrabLabel
 An iteractive application for segmentation label
 ---------------------------
 # Basic Description
-This application has an interactive GUI and uses grabcut algorithm. You can use it to label images as training data for deep learning tasks, such as semantic segmentation. If you only want to use this application, the files in GrabLabel_EXE are all what you need.
+This application has an interactive GUI and uses grabcut algorithm. You can use it to label images as training data for deep learning tasks, such as semantic segmentation. If you only want to use this application, the files in GrabLabel_EXE are what you need and the installation of Qt is also required.
 
 # Developing Tool
 Visual Studio 2017 with Qt Extension
