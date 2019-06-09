@@ -69,6 +69,8 @@ void GrabLabel::CloseImgAction() {
 	//清空scene
 	scene->clear();
 	multiLabel.clearImg();
+	//清0交互次数
+	iteracTimes = 0;
 	//设置开关
 	buttonsOff();
 }
@@ -194,6 +196,11 @@ void GrabLabel::on_toolButtonSetLabel_clicked()
 
 			}
 		}
+		//每次要把GCmask清0，否则roi大小变化时会有遗留痕迹
+		multiLabel.currentGCMask.setTo(0);
+		//清0交互次数
+		iteracTimes = 0;
+
 		QString notice = "Set label successfully as: " + label;
 		QMessageBox::about(this, "Notice", notice);
 
@@ -290,7 +297,6 @@ Mat groupToMask(QGraphicsScene *scene, int type)
 	}
 	QGraphicsItemGroup *group = scene->createItemGroup(items);
 	QPixmap map = itemToQPixmap(group);
-	qDebug() << map.size();
 	//组合成group后必须要销毁，不然会出错
 	scene->destroyItemGroup(group);
 	Mat mat = cvert::QPixmapToCvMat(map);
@@ -311,9 +317,15 @@ void GrabLabel::on_toolButtonGrabCut_pressed()
 		//读入图像
 		Mat cvImg = imread(multiLabel.inputImgName.toStdString());
 		//制作ROI矩形，比真正的矩形小一圈
-		Rect cvRect(roi->getX() + 1, roi->getY() + 1,
-			roi->getWidth() - 2, roi->getHeight() - 2);
-
+		//Rect cvRect(roi->getX() + 1, roi->getY() + 1,
+		//	roi->getWidth() - 2, roi->getHeight() - 2);
+		Rect cvRect(int(roi->getX()), int(roi->getY()),
+			int(roi->getWidth())+1, int(roi->getHeight())+1);
+		
+		qDebug() << cvRect.x <<endl;
+		qDebug() << cvRect.y << endl;
+		qDebug() << cvRect.width << endl;
+		qDebug() << cvRect.height << endl;
 		//前景与背景的mask ------------检查是否为空
 		Mat fgMask = groupToMask(scene, QGraphicsLineItem::Type);
 		Mat bgMask = groupToMask(scene, QGraphicsEllipseItem::Type);
@@ -324,35 +336,45 @@ void GrabLabel::on_toolButtonGrabCut_pressed()
 		if (multiLabel.currentGCMask.empty()) {
 			multiLabel.currentGCMask = Mat::zeros(cvImg.size(), CV_8UC1);
 		}
+		
 		if (cvRect == multiLabel.currentRect) {
-			multiLabel.currentGCMask.setTo(GC_FGD, fgMask);	//确定的前景
-			multiLabel.currentGCMask.setTo(GC_BGD, bgMask);	//确定的背景
+			
+			multiLabel.currentGCMask(cvRect).setTo(GC_FGD, fgMask(cvRect));	//确定的前景
+			multiLabel.currentGCMask(cvRect).setTo(GC_BGD, bgMask(cvRect));	//确定的背景
 		}
 		else {
 			multiLabel.currentRect = cvRect;
 			multiLabel.currentGCMask(cvRect) = GC_PR_FGD; //可能的前景
-			multiLabel.currentGCMask.setTo(GC_FGD, fgMask);	//确定的前景
-			multiLabel.currentGCMask.setTo(GC_BGD, bgMask);	//确定的背景
+			multiLabel.currentGCMask(cvRect).setTo(GC_FGD, fgMask(cvRect));	//确定的前景
+			multiLabel.currentGCMask(cvRect).setTo(GC_BGD, bgMask(cvRect));	//确定的背景
 		}
 
 
 		//中间变量
 		Mat bgdModel, fgdModel;
 		//确定迭代次数
-		int iterCount = 1;
+		int iterCount = 5;
 		//分割
 		if (cutMode == NORMAL_CUT) {
-			grabCut(cvImg, multiLabel.currentGCMask, cvRect, bgdModel, fgdModel,
-				iterCount, GC_INIT_WITH_MASK);
+			if(iteracTimes==0)
+				grabCut(cvImg, multiLabel.currentGCMask, cvRect, bgdModel, fgdModel,
+					iterCount, GC_INIT_WITH_MASK);
+			else
+				grabCut(cvImg, multiLabel.currentGCMask, cvRect, bgdModel, fgdModel,
+					iterCount, GC_EVAL);
 		}
 		else if (cutMode == LIGHTNING_CUT) {
-			Rect outerRect(roi->getX(), roi->getY(),
-				roi->getWidth(), roi->getHeight());
-			grabCut(cvImg(outerRect), multiLabel.currentGCMask(outerRect),
-				outerRect, bgdModel, fgdModel,
-				iterCount, GC_INIT_WITH_MASK);
+			//闪电模式下GCMask必须包含三种标注，少一种都会报错？？？很迷
+			//所有保险起见，第一次分割不使用闪电模式，用普通模式代替
+			if(iteracTimes == 0)
+				grabCut(cvImg, multiLabel.currentGCMask, cvRect, bgdModel, fgdModel,
+					iterCount, GC_INIT_WITH_MASK);
+			else 
+				grabCut(cvImg(cvRect), multiLabel.currentGCMask(cvRect),
+					cvRect, bgdModel, fgdModel,
+					iterCount, GC_INIT_WITH_MASK);
 		}
-
+		iteracTimes++;
 		//myGrabCut(cvImg, cvRect, iterCount);
 		//grabCut(cvImg(cvRect), multiLabel.currentGCMask(cvRect), cvRect, bgdModel, fgdModel,
 		//	iterCount, GC_INIT_WITH_MASK);
@@ -388,7 +410,6 @@ void GrabLabel::clearType(int type)
 	QList<QGraphicsItem*> items = scene->items();
 	foreach(QGraphicsItem *item, items) {
 		if (item->type() == type) {
-			qDebug() << item->boundingRect();
 			scene->removeItem(item);
 		}
 	}

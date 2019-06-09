@@ -58,12 +58,6 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 		else if(event->button() == Qt::RightButton){
 			brushing = true;
 			brushBackground = true;
-			addEllipse(event->scenePos().x(),
-				event->scenePos().y(),
-				brushSize,
-				brushSize,
-				QPen(Qt::NoPen),
-				QBrush(Qt::blue));
 		}
 		
 		
@@ -108,8 +102,9 @@ void MyScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 }
 
 void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
-	if (brushMode && brushing && bounding.contains(event->scenePos())) {
+{	
+	//if (brushMode && brushing && bounding.contains(event->scenePos())) {
+	if (brushMode && brushing && this->sceneRect().contains(event->scenePos())) {
 		if (!brushBackground) {
 			// We draw the line with the previous coordinates
 			addLine(previousPoint.x(),
@@ -121,8 +116,8 @@ void MyScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 			previousPoint = event->scenePos();
 		}
 		else {
-			addEllipse(event->scenePos().x(),
-				event->scenePos().y(),
+			addEllipse(event->scenePos().x()- brushSize/2.0,
+				event->scenePos().y()- brushSize/2.0,
 				brushSize,
 				brushSize,
 				QPen(Qt::NoPen),

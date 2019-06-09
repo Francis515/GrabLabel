@@ -53,7 +53,9 @@ private:
 	void clearType(int type);
 	//分割模式,普通模式和闪电模式
 	enum{NORMAL_CUT=1,LIGHTNING_CUT=2};
-	int cutMode = LIGHTNING_CUT;
+	int cutMode = NORMAL_CUT;
+	//交互次数
+	int iteracTimes = 0;
 
 protected:
 	void closeEvent(QCloseEvent *event);

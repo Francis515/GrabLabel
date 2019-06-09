@@ -94,5 +94,6 @@ void ROI::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		drawing = false;
 		lastDraw = true;
 	}
+	qDebug() << ROIRect;
 	
 }
