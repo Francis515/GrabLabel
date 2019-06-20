@@ -25,7 +25,7 @@ void ROI::setROI(bool checkBoxROI) {
 QRectF ROI::boundingRect() const
 {
 	//根据图像的范围设定最大边界
-	return QRectF(0,0,boundingW,boundingH);
+	return QRectF(0,0,boundingW-1,boundingH-1);
 }
 
 double ROI::getX() {
@@ -94,6 +94,4 @@ void ROI::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 		drawing = false;
 		lastDraw = true;
 	}
-	qDebug() << ROIRect;
-	
 }

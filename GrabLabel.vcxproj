@@ -32,11 +32,11 @@
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <ReferencePath>F:\apps\opencv\build\x64\vc15\lib;$(ReferencePath)</ReferencePath>
     <LibraryPath>F:\apps\opencv\build\include;$(LibraryPath)</LibraryPath>
-    <IncludePath>F:\apps\opencv\build\include;$(IncludePath)</IncludePath>
+    <IncludePath>F:\apps\opencv\sources\modules\imgproc\src;F:\apps\opencv\build\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>F:\apps\opencv\build\include;$(IncludePath)</IncludePath>
+    <IncludePath>F:\apps\opencv\build\include;F:\apps\opencv\sources\modules\imgproc\src;$(IncludePath)</IncludePath>
     <ReferencePath>F:\apps\opencv\build\x64\vc15\lib;$(ReferencePath)</ReferencePath>
     <LibraryPath>F:\apps\opencv\build\include;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -119,6 +119,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GMM.cpp" />
     <ClCompile Include="GrabLabel.cpp" />
     <ClCompile Include="ImageViewer.cpp" />
     <ClCompile Include="main.cpp" />
@@ -137,12 +138,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvertType.h" />
+    <ClInclude Include="GMM.h" />
     <ClInclude Include="ImageViewer.h" />
     <QtMoc Include="MyScene.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWidgets</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtWidgets</IncludePath>
     </QtMoc>
     <ClInclude Include="MultiLabel.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ROI.h" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +164,9 @@
     <Image Include="GrabLabel_EXE\exp2.png" />
     <Image Include="GrabLabel_EXE\label1.png" />
     <Image Include="GrabLabel_EXE\label2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="GrabLabel.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

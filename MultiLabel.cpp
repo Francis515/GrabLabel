@@ -73,6 +73,8 @@ void MultiLabel::refresh()
 	//currentMask = 0;
 	currentGCMask.setTo(0);
 	currentMask.setTo(0);
+	currentBgdModel.release();
+	currentFgdModel.release();
 }
 
 void MultiLabel::clearImg()
@@ -82,6 +84,8 @@ void MultiLabel::clearImg()
 	//新打开图片，必须要释放，不能仅置为0，因为尺寸发生了变化
 	currentGCMask.release();
 	currentMask.release();
+	currentBgdModel.release();
+	currentFgdModel.release();
 	maskVec.clear();
 }
 void MultiLabel::clearLabel()

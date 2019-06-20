@@ -8,6 +8,7 @@
 #include<ROI.h>
 #include<qDebug>
 
+//  图形场景重定义
 class MyScene :
 	public QGraphicsScene
 {
@@ -15,6 +16,7 @@ class MyScene :
 public:
 	explicit MyScene(QObject *parent= Q_NULLPTR);
 	~MyScene();
+	//设置笔刷
 	void setBrush(bool checkBoxBrush, bool checkBoxClean);
 	void setBrushSize(int brushSize);
 	void setBounding(QPointF topLeft, QPointF bottomRight);
@@ -26,6 +28,7 @@ private:
 	QRectF bounding;
 	QPointF previousPoint;
 	int brushSize = 5;
+	//绘图控制变量
 	bool checkBoxBrush = false;
 	bool brushMode = false;
 	bool cleanMode = false;

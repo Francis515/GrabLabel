@@ -6,13 +6,15 @@
 #include<algorithm>
 using namespace cv;
 using namespace std;
+
+//图层数据结构
 typedef struct 
 {
 	int labelNum=0;
 	Mat mask; //仅包含1和0
 } multiMask;
 
-//整合数据，没必要严格封装
+//整合数据，为方便使用没有严格封装
 class MultiLabel
 {
 public:
@@ -23,10 +25,13 @@ public:
 
 	//分割出的掩膜
 	//GCMask可以包含0-3的值
+	//GC_BGD=0, GC_FGD=1, GC_PR_BGD=2, GC_PR_FGD=3
 	//Mask仅包含0和1，是GCMask中1和3的位置
 	Mat currentGCMask;
 	Mat currentMask;
 	Rect currentRect;
+	Mat currentBgdModel;
+	Mat currentFgdModel;
 
 	//用于合成结果的方法
 	vector<multiMask> maskVec;
@@ -47,8 +52,6 @@ public:
 	vector<int> labelNum;
 	vector<int> labelColor;
 	vector<string> labelName;
-private:
-	
 	
 };
 

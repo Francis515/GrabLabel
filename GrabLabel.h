@@ -24,6 +24,8 @@
 #include<ROI.h>
 #include<opencv2/opencv.hpp>
 #include"ConvertType.h"
+#include"GMM.h"
+#include<ctime>
 using namespace cv;
 using namespace std;
 
@@ -55,7 +57,7 @@ private:
 	enum{NORMAL_CUT=1,LIGHTNING_CUT=2};
 	int cutMode = NORMAL_CUT;
 	//½»»¥´ÎÊý
-	int iteracTimes = 0;
+	int interacCount = 0;
 
 protected:
 	void closeEvent(QCloseEvent *event);

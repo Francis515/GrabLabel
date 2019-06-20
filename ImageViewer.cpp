@@ -28,6 +28,8 @@ void ImageViewer::wheelEvent(QWheelEvent *event) {
 	}
 }
 
+
+// 鼠标拖动功能，没有启用
 /*
 void ImageViewer::mouseMoveEvent(QMouseEvent *event) {
 	

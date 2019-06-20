@@ -70,7 +70,7 @@ void GrabLabel::CloseImgAction() {
 	scene->clear();
 	multiLabel.clearImg();
 	//清0交互次数
-	iteracTimes = 0;
+	interacCount = 0;
 	//设置开关
 	buttonsOff();
 }
@@ -199,7 +199,7 @@ void GrabLabel::on_toolButtonSetLabel_clicked()
 		//每次要把GCmask清0，否则roi大小变化时会有遗留痕迹
 		multiLabel.currentGCMask.setTo(0);
 		//清0交互次数
-		iteracTimes = 0;
+		interacCount = 0;
 
 		QString notice = "Set label successfully as: " + label;
 		QMessageBox::about(this, "Notice", notice);
@@ -316,16 +316,10 @@ void GrabLabel::on_toolButtonGrabCut_pressed()
 	try {
 		//读入图像
 		Mat cvImg = imread(multiLabel.inputImgName.toStdString());
-		//制作ROI矩形，比真正的矩形小一圈
-		//Rect cvRect(roi->getX() + 1, roi->getY() + 1,
-		//	roi->getWidth() - 2, roi->getHeight() - 2);
+		//制作ROI矩形，考虑边界
 		Rect cvRect(int(roi->getX()), int(roi->getY()),
 			int(roi->getWidth())+1, int(roi->getHeight())+1);
-		
-		qDebug() << cvRect.x <<endl;
-		qDebug() << cvRect.y << endl;
-		qDebug() << cvRect.width << endl;
-		qDebug() << cvRect.height << endl;
+
 		//前景与背景的mask ------------检查是否为空
 		Mat fgMask = groupToMask(scene, QGraphicsLineItem::Type);
 		Mat bgMask = groupToMask(scene, QGraphicsEllipseItem::Type);
@@ -353,32 +347,44 @@ void GrabLabel::on_toolButtonGrabCut_pressed()
 		//中间变量
 		Mat bgdModel, fgdModel;
 		//确定迭代次数
-		int iterCount = 5;
+		int iterCount = 4;
+		//计时
+		clock_t start = clock();
 		//分割
 		if (cutMode == NORMAL_CUT) {
-			if(iteracTimes==0)
-				grabCut(cvImg, multiLabel.currentGCMask, cvRect, bgdModel, fgdModel,
+			if (interacCount == 0) {
+				mygrabCut(cvImg, multiLabel.currentGCMask, cvRect,
+					bgdModel, fgdModel,
 					iterCount, GC_INIT_WITH_MASK);
+				multiLabel.currentBgdModel = bgdModel.clone();
+				multiLabel.currentFgdModel = fgdModel.clone();
+			}
+				
 			else
-				grabCut(cvImg, multiLabel.currentGCMask, cvRect, bgdModel, fgdModel,
+				mygrabCut(cvImg, multiLabel.currentGCMask, cvRect, 
+					multiLabel.currentBgdModel, multiLabel.currentFgdModel,
 					iterCount, GC_EVAL);
 		}
 		else if (cutMode == LIGHTNING_CUT) {
-			//闪电模式下GCMask必须包含三种标注，少一种都会报错？？？很迷
+			//闪电模式下GCMask必须包含三种标注
 			//所有保险起见，第一次分割不使用闪电模式，用普通模式代替
-			if(iteracTimes == 0)
-				grabCut(cvImg, multiLabel.currentGCMask, cvRect, bgdModel, fgdModel,
-					iterCount, GC_INIT_WITH_MASK);
-			else 
-				grabCut(cvImg(cvRect), multiLabel.currentGCMask(cvRect),
+			if (interacCount == 0) {
+				mygrabCut(cvImg, multiLabel.currentGCMask,
 					cvRect, bgdModel, fgdModel,
 					iterCount, GC_INIT_WITH_MASK);
+				multiLabel.currentBgdModel = bgdModel.clone();
+				multiLabel.currentFgdModel = fgdModel.clone();
+			}
+				
+			else 
+				mygrabCut(cvImg(cvRect), multiLabel.currentGCMask(cvRect),cvRect, 
+					multiLabel.currentBgdModel, multiLabel.currentFgdModel,
+					iterCount, GC_INIT_WITH_MASK);
 		}
-		iteracTimes++;
-		//myGrabCut(cvImg, cvRect, iterCount);
-		//grabCut(cvImg(cvRect), multiLabel.currentGCMask(cvRect), cvRect, bgdModel, fgdModel,
-		//	iterCount, GC_INIT_WITH_MASK);
-
+		clock_t end = clock();
+		qDebug() << interacCount << ": "<< (double)(end - start) / CLOCKS_PER_SEC
+			<< "second";
+		interacCount++;
 
 		//结果是可能前景和确定前景的并集
 		Mat resultMaskFGD = Mat::zeros(cvImg.size(), CV_8UC1);
@@ -429,54 +435,3 @@ QPixmap itemToQPixmap(QGraphicsItem *item)
 	return pixmap;
 }
 
-/*
-//制作掩膜 先前景后背景
-	QList<QGraphicsItem*> items = scene->items();
-
-	//前景组合
-	foreach(QGraphicsItem *item, items) {
-		if(item->type()!=QGraphicsLineItem::Type){
-			item->setOpacity(0);
-		}
-	}
-	QGraphicsItemGroup *fgGroup = scene->createItemGroup(items);
-	QPixmap fgMap = itemToQPixmap(fgGroup);
-
-	//背景组合
-	foreach(QGraphicsItem *item, items) {
-		item->setOpacity(1);
-	}
-	foreach(QGraphicsItem *item, items) {
-		if (item->type() != QGraphicsEllipseItem::Type) {
-			item->setOpacity(0);
-		}
-	}
-	QGraphicsItemGroup *bgGroup = scene->createItemGroup(items);
-	QPixmap bgMap = itemToQPixmap(bgGroup);
-
-
-	//qpixmap转为mat
-	Mat fgMat = cvert::QPixmapToCvMat(fgMap);
-	Mat bgMat = cvert::QPixmapToCvMat(bgMap);
-
-	//mat转为灰度图
-	cvtColor(fgMat, fgMat, CV_BGR2GRAY);
-	cvtColor(bgMat, bgMat, CV_BGR2GRAY);
-
-	//二值化为0和1
-	threshold(fgMat, fgMat, 0.5, 1, THRESH_BINARY);
-	threshold(bgMat, bgMat, 0.5, 1, THRESH_BINARY);
-
-void GrabLabel::myGrabCut(Mat cvImg, Rect cvRect,int iterCount)
-{
-	Mat roiImg;
-	roiImg = (cvImg(cvRect)).clone();
-	Mat roiGCMask; 
-	roiGCMask = (multiLabel.currentGCMask(cvRect)).clone();
-	Mat bgdModel, fgdModel;
-
-	Rect roiRect(0,0, roiImg.cols,roiImg.rows);
-	grabCut(roiImg, roiGCMask, roiRect, bgdModel, fgdModel,
-		iterCount, GC_INIT_WITH_MASK);
-	multiLabel.currentGCMask(cvRect) = roiGCMask.clone();
-}*/
