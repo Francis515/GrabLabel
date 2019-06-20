@@ -12,7 +12,7 @@ Visual Studio 2017 with Qt Extension
 Qt 5.9.1, OpenCV 3.4.5
 
 # GUI
-![](https://github.com/Francis515/GrabLabel/raw/master/GrabLabel_EXE/GrabLabel_GUI.png)
+![](https://github.com/Francis515/GrabLabel/raw/master/Examples/GrabLabel_GUI.png)
 
 # Instructions
 * Preparing: First thing before you start to use it, make a txt file of your label information. The format is "value name R G B" for each line, for example "3 sky 0 0 255". The value is the exact value in the final result gray image. The name doesn't affect anything, just for convenience. R G B is the color that will appear in the final result color image.
@@ -37,7 +37,7 @@ session, you should focus on one object or a sequences of adjacent objects.
 * Lightning mode is recommended to be used to accelarate grabcut when the size of the image is quite large. In this mode, the ROI will be treated as the whole cut region so that the time consumption of grabcut is reduced greatly but the result, as trade-off,  may not be as satisfying as in normal mode.
 
 # Examples
-![](https://github.com/Francis515/GrabLabel/raw/master/GrabLabel_EXE/exp1.jpg)
-![](https://github.com/Francis515/GrabLabel/raw/master/GrabLabel_EXE/label1.png)
-![](https://github.com/Francis515/GrabLabel/raw/master/GrabLabel_EXE/exp2.png)
-![](https://github.com/Francis515/GrabLabel/raw/master/GrabLabel_EXE/label2.png)
+![](https://github.com/Francis515/GrabLabel/raw/master/Examples/exp1.jpg)
+![](https://github.com/Francis515/GrabLabel/raw/master/Examples/label1.png)
+![](https://github.com/Francis515/GrabLabel/raw/master/Examples/exp2.png)
+![](https://github.com/Francis515/GrabLabel/raw/master/Examples/label2.png)
