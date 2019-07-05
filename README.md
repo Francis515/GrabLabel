@@ -1,20 +1,25 @@
-GrabLabel
-===========================
-An iteractive application for segmentation label
----------------------------
-# Basic Description
-This application has an interactive GUI and uses grabcut algorithm. You can use it to label images as training data for deep learning tasks, such as semantic segmentation. If you only want to use this application, the files in GrabLabel_EXE are what you need and the installation of Qt is also required.
+# GrabLabel
 
-# Developing Tool
+An iteractive application for segmentation label
+
+## Basic Description
+
+This application has an interactive GUI and uses grabcut algorithm. You can use it to label images as training data for deep learning tasks, such as semantic segmentation. If you only want to use this application, the files in "bin" are what you need.
+
+## Developing Tool
+
 Visual Studio 2017 with Qt Extension
 
-# Dependency Libs/Tools
+## Dependency Libs/Tools
+
 Qt 5.9.1, OpenCV 3.4.5
 
-# GUI
-![](https://github.com/Francis515/GrabLabel/blob/master/Examples/GrabLabel_GUI.png)
+## GUI
 
-# Instructions
+![](Examples/GrabLabel_GUI.png)
+
+## Instructions
+
 * Preparing: First thing before you start to use it, make a txt file of your label information. The format is "value name R G B" for each line, for example "3 sky 0 0 255". The value is the exact value in the final result gray image. The name doesn't affect anything, just for convenience. R G B is the color that will appear in the final result color image.
 
 * Grabcut: Once you finish creating the txt file, you can start labeling. Load an image and load your txt file. Then input one value and click set label button. Next, draw a ROI which contains the object you want to label. Then you can use the brush to mark the foreground with left mouse button and the background with the right mouse button. After click GrabCut button, you will soon see the result.
@@ -30,6 +35,7 @@ session, you should focus on one object or a sequences of adjacent objects.
 * Restarting: After you have labeled one image and saved the result, you should close the image before you open a new one.
 
 # Some Caveats
+
 * Before grabcut, make sure a label has been set and a ROI has been draw.
 * Brush size will be adjusted only after you click Brush Size button.
 * Use left mouse button to mark foreground which has red color and right button to mark background which has blue color.
@@ -37,7 +43,7 @@ session, you should focus on one object or a sequences of adjacent objects.
 * Lightning mode is recommended to be used to accelarate grabcut when the size of the image is quite large. In this mode, the ROI will be treated as the whole cut region so that the time consumption of grabcut is reduced greatly but the result, as trade-off,  may not be as satisfying as in normal mode.
 
 # Examples
-![](https://github.com/Francis515/GrabLabel/blob/master/Examples/exp1.jpg)
-![](https://github.com/Francis515/GrabLabel/blob/master/Examples/label1.png)
-![](https://github.com/Francis515/GrabLabel/blob/master/Examples/exp2.png)
-![](https://github.com/Francis515/GrabLabel/blob/master/Examples/label2.png)
+![](Examples/exp1.jpg)
+![](Examples/label1.png)
+![](Examples/exp2.png)
+![](Examples/label2.png)
