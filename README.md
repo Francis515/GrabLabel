@@ -1,6 +1,6 @@
 # GrabLabel
 
-An iteractive application for segmentation label
+An interactive application for segmentation labeling.
 
 ## Basic Description
 
