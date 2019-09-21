@@ -45,5 +45,3 @@ session, you should focus on one object or a sequences of adjacent objects.
 # Examples
 ![](Examples/exp1.jpg)
 ![](Examples/label1.png)
-![](Examples/exp2.png)
-![](Examples/label2.png)
